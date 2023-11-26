@@ -9,9 +9,9 @@
 # null: API response still in progress or incomplete
 
 class ChatGpt
-
-  DEFAULT_MODEL = 'gpt-3.5-turbo'
-  DEFAULT_TEMPERATURE = 0.7
+  # DEFAULT_MODEL = 'gpt-3.5-turbo'
+  DEFAULT_MODEL = 'gpt-4'
+  DEFAULT_TEMPERATURE = 0.4
   CONTINUE_MESSAGE = '続けてください'
 
   attr_accessor :model, :temperature
@@ -74,7 +74,8 @@ class ChatGpt
       begin
         @history << { 'role' => 'user', 'content' => content }
         response = @client.chat(parameters: self.get_parameters)
-        choice = response['choices'].first
+        result = JSON.parse(response.body)
+        choice = result['choices'].first
         @history << choice['message']
         choice
       rescue => exception
